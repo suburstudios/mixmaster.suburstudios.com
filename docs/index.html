@@ -3,111 +3,85 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mix & Master Toggle - Suburbio Studios</title>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
+<title>Botón Antes/Después</title>
 <style>
-body {
-  background: #111;
-  color: #fff;
-  font-family: 'Montserrat', sans-serif;
-  margin:0; padding:0;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: flex-start;
-  min-height: 100vh;
-  padding: 2rem;
-}
+  body {
+    font-family: sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: #111;
+    color: #fff;
+  }
 
-h1 { font-weight: 700; margin-bottom: 1rem; text-align: center; }
-.toggle-section { background:#1c1c1c; padding:2rem; border-radius:12px; margin-bottom:2rem; width:100%; max-width:600px; }
-.toggle-section h2 { margin-top:0; margin-bottom:1rem; font-weight:700; }
-input[type=range] { width: 100%; margin-top:1rem; }
-.labels { display:flex; justify-content:space-between; font-size:14px; margin-top:5px; }
-audio { width: 100%; border-radius:8px; }
+  .toggle-btn {
+    position: relative;
+    width: 120px;
+    height: 50px;
+    background: #444;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 10px;
+  }
+
+  .toggle-btn.active {
+    background: #ff4a4a;
+  }
+
+  .toggle-circle {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background: #fff;
+    border-radius: 50%;
+    top: 0;
+    left: 0;
+    transition: left 0.3s;
+  }
+
+  .toggle-btn.active .toggle-circle {
+    left: 70px;
+  }
+
+  .toggle-labels {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    z-index: 1;
+    padding: 0 15px;
+    font-weight: bold;
+    font-size: 14px;
+    user-select: none;
+  }
 </style>
 </head>
 <body>
 
-<h1>Mix & Master Toggle</h1>
-
-<div class="toggle-section">
-  <h2>Mezcla: Antes / Después</h2>
-  <audio id="audioMezcla" controls></audio>
-  <input type="range" id="sliderMezcla" min="0" max="100" value="50">
-  <div class="labels"><span>Antes</span><span>Después</span></div>
-</div>
-
-<div class="toggle-section">
-  <h2>Mastering: Antes / Después</h2>
-  <audio id="audioMaster" controls></audio>
-  <input type="range" id="sliderMaster" min="0" max="100" value="50">
-  <div class="labels"><span>Antes</span><span>Después</span></div>
+<div class="toggle-btn" id="toggleBtn">
+  <div class="toggle-circle"></div>
+  <div class="toggle-labels">
+    <span>Antes</span>
+    <span>Después</span>
+  </div>
 </div>
 
 <script>
-// Web Audio Context
-const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-
-// Mezcla
-const mezclaAntes = new Audio('audios/mezcla_antes.mp3');
-const mezclaDespues = new Audio('audios/mezcla_despues.mp3');
-
-const sourceMezclaAntes = audioCtx.createMediaElementSource(mezclaAntes);
-const sourceMezclaDespues = audioCtx.createMediaElementSource(mezclaDespues);
-const gainMezclaAntes = audioCtx.createGain();
-const gainMezclaDespues = audioCtx.createGain();
-
-sourceMezclaAntes.connect(gainMezclaAntes).connect(audioCtx.destination);
-sourceMezclaDespues.connect(gainMezclaDespues).connect(audioCtx.destination);
-
-gainMezclaAntes.gain.value = 0.5;
-gainMezclaDespues.gain.value = 0.5;
-
-const sliderMezcla = document.getElementById('sliderMezcla');
-sliderMezcla.addEventListener('input', ()=> {
-  const val = sliderMezcla.value/100;
-  gainMezclaAntes.gain.value = 1-val;
-  gainMezclaDespues.gain.value = val;
-});
-
-const audioMezcla = document.getElementById('audioMezcla');
-audioMezcla.src = 'audios/mezcla_antes.mp3';
-audioMezcla.addEventListener('play', ()=> { audioCtx.resume(); mezclaAntes.play(); mezclaDespues.play(); syncTime(mezclaAntes, mezclaDespues); });
-audioMezcla.addEventListener('pause', ()=> { mezclaAntes.pause(); mezclaDespues.pause(); });
-audioMezcla.addEventListener('seeked', ()=> { mezclaAntes.currentTime = audioMezcla.currentTime; mezclaDespues.currentTime = audioMezcla.currentTime; });
-
-// Mastering
-const masterAntes = new Audio('audios/mastering_antes.mp3');
-const masterDespues = new Audio('audios/mastering_despues.mp3');
-
-const sourceMasterAntes = audioCtx.createMediaElementSource(masterAntes);
-const sourceMasterDespues = audioCtx.createMediaElementSource(masterDespues);
-const gainMasterAntes = audioCtx.createGain();
-const gainMasterDespues = audioCtx.createGain();
-
-sourceMasterAntes.connect(gainMasterAntes).connect(audioCtx.destination);
-sourceMasterDespues.connect(gainMasterDespues).connect(audioCtx.destination);
-
-gainMasterAntes.gain.value = 0.5;
-gainMasterDespues.gain.value = 0.5;
-
-const sliderMaster = document.getElementById('sliderMaster');
-sliderMaster.addEventListener('input', ()=> {
-  const val = sliderMaster.value/100;
-  gainMasterAntes.gain.value = 1-val;
-  gainMasterDespues.gain.value = val;
-});
-
-const audioMaster = document.getElementById('audioMaster');
-audioMaster.src = 'audios/mastering_antes.mp3';
-audioMaster.addEventListener('play', ()=> { audioCtx.resume(); masterAntes.play(); masterDespues.play(); syncTime(masterAntes, masterDespues); });
-audioMaster.addEventListener('pause', ()=> { masterAntes.pause(); masterDespues.pause(); });
-audioMaster.addEventListener('seeked', ()=> { masterAntes.currentTime = audioMaster.currentTime; masterDespues.currentTime = audioMaster.currentTime; });
-
-// Sincronizar audios
-function syncTime(a1,a2){
-  a2.currentTime = a1.currentTime;
-  requestAnimationFrame(()=>syncTime(a1,a2));
-}
+  const toggle = document.getElementById('toggleBtn');
+  toggle.addEventListener('click', () => {
+    toggle.classList.toggle('active');
+    if(toggle.classList.contains('active')){
+      console.log('Estado: Después');
+      // Aquí puedes ejecutar tu función de "Después"
+    } else {
+      console.log('Estado: Antes');
+      // Aquí puedes ejecutar tu función de "Antes"
+    }
+  });
 </script>
 
 </body>
