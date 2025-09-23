@@ -42,14 +42,7 @@ h2 {
   margin-top:10px;
 }
 
-.play-btn {
-  background:#ff4a4a; border:none; color:#fff; font-size:18px; 
-  padding:10px 20px; border-radius:8px; cursor:pointer; margin-top:10px;
-  transition:background 0.3s;
-}
-.play-btn:hover { background:#e13a3a; }
-
-audio { display:none; } /* ocultamos players nativos */
+audio { width:100%; margin-top:10px; }
 
 .toggle-wrapper {
   display:flex; align-items:center; justify-content:center; gap:10px;
@@ -83,7 +76,7 @@ footer { text-align:center; padding:2rem 1rem; background:#000; margin-top:4rem;
 <h2>Proyectos de Mezcla</h2>
 <div class="projects-grid">
 
-<!-- Tarjeta de proyecto 1 (Mix normal) -->
+<!-- Tarjeta Mix ejemplo -->
 <div class="project-card" data-type="mix">
   <img class="project-thumbnail" src="images/mix1_thumb.jpg" alt="Thumbnail Proyecto Mix 1">
   <h3>Proyecto Mix 1</h3>
@@ -101,28 +94,23 @@ footer { text-align:center; padding:2rem 1rem; background:#000; margin-top:4rem;
     <span class="label-after">Después</span>
   </div>
 </div>
-<!-- FIN Tarjeta proyecto 1 -->
 
 </div> <!-- FIN grid mezcla -->
 
 <h2 style="margin-top:3rem;">Proyectos de Mastering</h2>
 <div class="projects-grid">
 
-<!-- Tarjeta Master 1 (con sistema AB corregido) -->
+<!-- Tarjeta Master 1 (corregida) -->
 <div class="project-card" data-type="master">
   <img class="project-thumbnail" src="images/master1_thumb.jpg" alt="Thumbnail Proyecto Master 1">
   <h3>Proyecto Master 1</h3>
   <div class="audio-wrapper">
-    <!-- Reproductores ocultos -->
-    <audio class="before-audio">
+    <audio controls class="before-audio">
       <source src="audio/master1_before.mp3" type="audio/mp3">
     </audio>
-    <audio class="after-audio">
+    <audio controls class="after-audio" style="display:none;">
       <source src="audio/master1_after.mp3" type="audio/mp3">
     </audio>
-
-    <!-- Botón único -->
-    <button class="play-btn">▶️ Play</button>
   </div>
   <div class="toggle-wrapper">
     <span class="label-before">Antes</span>
@@ -141,43 +129,40 @@ footer { text-align:center; padding:2rem 1rem; background:#000; margin-top:4rem;
 </footer>
 
 <script>
+// SOLO para sección Mastering
 document.querySelectorAll('.project-card[data-type="master"]').forEach(card => {
   const toggle = card.querySelector('.toggle-btn');
-  const playBtn = card.querySelector('.play-btn');
   const beforeAudio = card.querySelector('audio.before-audio');
   const afterAudio = card.querySelector('audio.after-audio');
 
   // Config inicial
-  afterAudio.muted = true; 
+  afterAudio.muted = true;
   beforeAudio.muted = false;
 
-  // Botón Play/Pause global
-  playBtn.addEventListener('click', () => {
-    if (beforeAudio.paused) {
-      beforeAudio.play();
-      afterAudio.play();
-      playBtn.textContent = "⏸ Pause";
-    } else {
-      beforeAudio.pause();
-      afterAudio.pause();
-      playBtn.textContent = "▶️ Play";
-    }
-  });
+  // Cuando se da play a uno, arrancamos ambos en paralelo
+  beforeAudio.addEventListener('play', () => afterAudio.play());
+  beforeAudio.addEventListener('pause', () => afterAudio.pause());
+  afterAudio.addEventListener('play', () => beforeAudio.play());
+  afterAudio.addEventListener('pause', () => beforeAudio.pause());
 
-  // Sincronizar tiempos
+  // Sincronizar posiciones
   beforeAudio.addEventListener('timeupdate', () => {
     if (Math.abs(beforeAudio.currentTime - afterAudio.currentTime) > 0.1) {
       afterAudio.currentTime = beforeAudio.currentTime;
     }
   });
 
-  // Toggle AB
+  // Toggle
   toggle.addEventListener('click', () => {
     toggle.classList.toggle('active');
     if(toggle.classList.contains('active')){
+      beforeAudio.style.display='none';
+      afterAudio.style.display='block';
       beforeAudio.muted = true;
       afterAudio.muted = false;
     } else {
+      afterAudio.style.display='none';
+      beforeAudio.style.display='block';
       afterAudio.muted = true;
       beforeAudio.muted = false;
     }
