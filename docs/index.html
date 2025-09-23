@@ -6,24 +6,99 @@
 <title>MixMaster - Suburbio Studios</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
 <style>
-  :root{--bg:#111;--card:#1c1c1c;--accent:#ff4a4a;--muted:#aaa;--white:#f1f1f1}
-  body{margin:0;padding:0;background:var(--bg);color:var(--white);font-family:Montserrat,system-ui,Segoe UI,Roboto,sans-serif}
-  header{background:#000;padding:2rem 1rem;text-align:center}
-  header h1{margin:0;font-weight:300;font-size:2rem}
-  header p{margin:6px 0 0;color:var(--muted)}
+  :root{
+    --bg:#111;
+    --card:#1c1c1c;
+    --accent:#ff4a4a;
+    --muted:#aaa;
+    --white:#f1f1f1;
+  }
+  body{
+    margin:0;
+    padding:0;
+    background:var(--bg);
+    color:var(--white);
+    font-family:Montserrat,system-ui,Segoe UI,Roboto,sans-serif;
+  }
+  header{
+    background:#000;
+    padding:2rem 1rem;
+    text-align:center;
+  }
+  header h1{
+    margin:0;
+    font-weight:300;
+    font-size:2rem;
+  }
+  header p{
+    margin:6px 0 0;
+    color:var(--muted);
+  }
 
-  .projects-wrapper{max-width:1200px;margin:2rem auto;padding:0 1rem}
-  h2{text-align:center;margin-bottom:1rem;display:inline-block;border-bottom:2px solid var(--accent);padding-bottom:6px}
+  .projects-wrapper{
+    max-width:1200px;
+    margin:2rem auto;
+    padding:0 1rem;
+  }
+  h2{
+    text-align:center;
+    margin-bottom:1rem;
+    display:inline-block;
+    border-bottom:2px solid var(--accent);
+    padding-bottom:6px;
+  }
 
-  .projects-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;margin-top:1rem}
-  .project-card{background:var(--card);padding:18px;border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,.5);display:flex;flex-direction:column;align-items:center}
-  .project-card:hover{transform:translateY(-4px);transition:transform .18s}
-  .project-thumbnail{width:100%;height:160px;object-fit:cover;border-radius:8px;margin-bottom:12px}
-  .project-card h3{margin:0 0 8px;font-size:16px;text-align:center}
+  .projects-grid{
+    display:grid;
+    gap:20px;
+    margin-top:1rem;
+    grid-template-columns:repeat(1,1fr);
+  }
+  @media (min-width:700px){
+    .projects-grid{
+      grid-template-columns:repeat(2,1fr);
+    }
+  }
 
-  .audio-wrapper{width:100%;margin-top:8px;display:flex;flex-direction:column;align-items:center}
-  .controls{width:100%;display:flex;align-items:center;gap:10px}
-  /* BOTÓN: icono blanco, sin fondo ni borde */
+  .project-card{
+    background:var(--card);
+    padding:18px;
+    border-radius:12px;
+    box-shadow:0 6px 18px rgba(0,0,0,.5);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+  }
+  .project-card:hover{
+    transform:translateY(-4px);
+    transition:transform .18s;
+  }
+  .project-thumbnail{
+    width:100%;
+    height:160px;
+    object-fit:cover;
+    border-radius:8px;
+    margin-bottom:12px;
+  }
+  .project-card h3{
+    margin:0 0 8px;
+    font-size:16px;
+    text-align:center;
+  }
+
+  .audio-wrapper{
+    width:100%;
+    margin-top:8px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+  }
+  .controls{
+    width:100%;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
   .play-btn{
     background:transparent;
     border:0;
@@ -37,163 +112,186 @@
     width:36px;
     height:36px;
     border-radius:50%;
-    outline: none;
+    outline:none;
   }
-  .play-btn:focus{box-shadow:0 0 0 2px rgba(255,74,74,0.15)} /* accesibilidad ligera */
+  .play-btn:focus{
+    box-shadow:0 0 0 2px rgba(255,74,74,0.15);
+  }
   .play-btn svg{display:block}
-  .time{font-family:monospace;font-size:13px;color:var(--muted);min-width:60px;text-align:center}
+  .time{
+    font-family:monospace;
+    font-size:13px;
+    color:var(--muted);
+    min-width:60px;
+    text-align:center;
+  }
   .progress{flex:1}
   input[type=range]{width:100%}
 
-  .toggle-wrapper{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:10px}
-  .toggle-btn{position:relative;width:70px;height:34px;background:#555;border-radius:20px;cursor:pointer;display:flex;align-items:center}
-  .toggle-circle{position:absolute;width:32px;height:32px;background:#fff;border-radius:50%;top:1px;left:1px;transition:left .18s}
-  .toggle-btn.active{background:var(--accent)}
-  .toggle-btn.active .toggle-circle{left:36px}
-  .label-before,.label-after{font-weight:700;font-size:14px;color:var(--white)}
+  .toggle-wrapper{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    margin-top:10px;
+  }
+  .toggle-btn{
+    position:relative;
+    width:70px;
+    height:34px;
+    background:#555;
+    border-radius:20px;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+  }
+  .toggle-circle{
+    position:absolute;
+    width:32px;
+    height:32px;
+    background:#fff;
+    border-radius:50%;
+    top:1px;
+    left:1px;
+    transition:left .18s;
+  }
+  .toggle-btn.active{
+    background:var(--accent);
+  }
+  .toggle-btn.active .toggle-circle{
+    left:36px;
+  }
+  .label-before,.label-after{
+    font-weight:700;
+    font-size:14px;
+    color:var(--white);
+  }
 
-  footer{text-align:center;padding:2rem 1rem;background:#000;margin-top:2.5rem;color:var(--muted)}
-  @media (max-width:420px){ .controls{flex-direction:column;align-items:stretch} .time{min-width:auto} }
+  footer{
+    text-align:center;
+    padding:2rem 1rem;
+    background:#000;
+    margin-top:2.5rem;
+    color:var(--muted);
+  }
+  @media (max-width:420px){
+    .controls{flex-direction:column;align-items:stretch}
+    .time{min-width:auto}
+  }
 </style>
 </head>
 <body>
-
 <header>
   <h1>Suburbio Studios</h1>
   <p>Ejemplos de Mezcla y Mastering — Toggle Antes / Después sin clicks</p>
 </header>
 
 <div class="projects-wrapper">
+
   <h2>Proyectos de Mix</h2>
-    <div class="projects-grid">
-  
-    <style>
-.projects-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* mínimo 300px por tarjeta */
-  gap: 20px;
-  margin-top: 1rem;
-}
-
-/* Forzar 2 columnas en escritorio */
-@media (min-width: 700px) {
-  .projects-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-</style>
-
-<div class="projects-grid">
-
-  <!-- MIX 1 -->
-  <div class="project-card" data-before="audio_example1_before.mp3" data-after="audio_example1_after.mp3" data-type="mix">
-    <img class="project-thumbnail" src="images/mix1_thumb.jpg" alt="Mix 1">
-    <h3>Proyecto Mix 1</h3>
-    <div class="audio-wrapper">
-      <div class="controls">
-        <button class="play-btn" aria-label="Reproducir">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-            <path d="M5 3v18l15-9L5 3z" fill="#FFFFFF"/>
-          </svg>
-        </button>
-        <div class="progress"><input type="range" min="0" max="100" value="0" step="0.1"></div>
-        <div class="time">0:00</div>
+  <div class="projects-grid">
+    <!-- MIX 1 -->
+    <div class="project-card" data-before="audio_example1_before.mp3" data-after="audio_example1_after.mp3" data-type="mix">
+      <img class="project-thumbnail" src="images/mix1_thumb.jpg" alt="Mix 1">
+      <h3>Proyecto Mix 1</h3>
+      <div class="audio-wrapper">
+        <div class="controls">
+          <button class="play-btn" aria-label="Reproducir">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M5 3v18l15-9L5 3z" fill="#FFFFFF"/>
+            </svg>
+          </button>
+          <div class="progress"><input type="range" min="0" max="100" value="0" step="0.1"></div>
+          <div class="time">0:00</div>
+        </div>
+        <div class="toggle-wrapper">
+          <span class="label-before">Antes</span>
+          <div class="toggle-btn"><div class="toggle-circle"></div></div>
+          <span class="label-after">Después</span>
+        </div>
       </div>
-      <div class="toggle-wrapper">
-        <span class="label-before">Antes</span>
-        <div class="toggle-btn"><div class="toggle-circle"></div></div>
-        <span class="label-after">Después</span>
+    </div>
+    <!-- MIX 2 -->
+    <div class="project-card" data-before="audio_example2_before.mp3" data-after="audio_example2_after.mp3" data-type="mix">
+      <img class="project-thumbnail" src="images/mix2_thumb.jpg" alt="Mix 2">
+      <h3>Proyecto Mix 2</h3>
+      <div class="audio-wrapper">
+        <div class="controls">
+          <button class="play-btn" aria-label="Reproducir">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M5 3v18l15-9L5 3z" fill="#FFFFFF"/>
+            </svg>
+          </button>
+          <div class="progress"><input type="range" min="0" max="100" value="0" step="0.1"></div>
+          <div class="time">0:00</div>
+        </div>
+        <div class="toggle-wrapper">
+          <span class="label-before">Antes</span>
+          <div class="toggle-btn"><div class="toggle-circle"></div></div>
+          <span class="label-after">Después</span>
+        </div>
+      </div>
+    </div>
+    <!-- MIX 3 -->
+    <div class="project-card" data-before="audio_example3_before.mp3" data-after="audio_example3_after.mp3" data-type="mix">
+      <img class="project-thumbnail" src="images/mix3_thumb.jpg" alt="Mix 3">
+      <h3>Proyecto Mix 3</h3>
+      <div class="audio-wrapper">
+        <div class="controls">
+          <button class="play-btn" aria-label="Reproducir">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M5 3v18l15-9L5 3z" fill="#FFFFFF"/>
+            </svg>
+          </button>
+          <div class="progress"><input type="range" min="0" max="100" value="0" step="0.1"></div>
+          <div class="time">0:00</div>
+        </div>
+        <div class="toggle-wrapper">
+          <span class="label-before">Antes</span>
+          <div class="toggle-btn"><div class="toggle-circle"></div></div>
+          <span class="label-after">Después</span>
+        </div>
+      </div>
+    </div>
+    <!-- MIX 4 -->
+    <div class="project-card" data-before="audio_example4_before.mp3" data-after="audio_example4_after.mp3" data-type="mix">
+      <img class="project-thumbnail" src="images/mix4_thumb.jpg" alt="Mix 4">
+      <h3>Proyecto Mix 4</h3>
+      <div class="audio-wrapper">
+        <div class="controls">
+          <button class="play-btn" aria-label="Reproducir">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M5 3v18l15-9L5 3z" fill="#FFFFFF"/>
+            </svg>
+          </button>
+          <div class="progress"><input type="range" min="0" max="100" value="0" step="0.1"></div>
+          <div class="time">0:00</div>
+        </div>
+        <div class="toggle-wrapper">
+          <span class="label-before">Antes</span>
+          <div class="toggle-btn"><div class="toggle-circle"></div></div>
+          <span class="label-after">Después</span>
+        </div>
       </div>
     </div>
   </div>
-
-  <!-- MIX 2 -->
-  <div class="project-card" data-before="audio_example2_before.mp3" data-after="audio_example2_after.mp3" data-type="mix">
-    <img class="project-thumbnail" src="images/mix2_thumb.jpg" alt="Mix 2">
-    <h3>Proyecto Mix 2</h3>
-    <div class="audio-wrapper">
-      <div class="controls">
-        <button class="play-btn" aria-label="Reproducir">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-            <path d="M5 3v18l15-9L5 3z" fill="#FFFFFF"/>
-          </svg>
-        </button>
-        <div class="progress"><input type="range" min="0" max="100" value="0" step="0.1"></div>
-        <div class="time">0:00</div>
-      </div>
-      <div class="toggle-wrapper">
-        <span class="label-before">Antes</span>
-        <div class="toggle-btn"><div class="toggle-circle"></div></div>
-        <span class="label-after">Después</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- MIX 3 -->
-  <div class="project-card" data-before="audio_example3_before.mp3" data-after="audio_example3_after.mp3" data-type="mix">
-    <img class="project-thumbnail" src="images/mix3_thumb.jpg" alt="Mix 3">
-    <h3>Proyecto Mix 3</h3>
-    <div class="audio-wrapper">
-      <div class="controls">
-        <button class="play-btn" aria-label="Reproducir">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-            <path d="M5 3v18l15-9L5 3z" fill="#FFFFFF"/>
-          </svg>
-        </button>
-        <div class="progress"><input type="range" min="0" max="100" value="0" step="0.1"></div>
-        <div class="time">0:00</div>
-      </div>
-      <div class="toggle-wrapper">
-        <span class="label-before">Antes</span>
-        <div class="toggle-btn"><div class="toggle-circle"></div></div>
-        <span class="label-after">Después</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- MIX 4 -->
-  <div class="project-card" data-before="audio_example4_before.mp3" data-after="audio_example4_after.mp3" data-type="mix">
-    <img class="project-thumbnail" src="images/mix4_thumb.jpg" alt="Mix 4">
-    <h3>Proyecto Mix 4</h3>
-    <div class="audio-wrapper">
-      <div class="controls">
-        <button class="play-btn" aria-label="Reproducir">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-            <path d="M5 3v18l15-9L5 3z" fill="#FFFFFF"/>
-          </svg>
-        </button>
-        <div class="progress"><input type="range" min="0" max="100" value="0" step="0.1"></div>
-        <div class="time">0:00</div>
-      </div>
-      <div class="toggle-wrapper">
-        <span class="label-before">Antes</span>
-        <div class="toggle-btn"><div class="toggle-circle"></div></div>
-        <span class="label-after">Después</span>
-      </div>
-    </div>
-  </div>
-
-</div>
 
   <h2 style="margin-top:2.5rem">Proyectos de Mastering</h2>
   <div class="projects-grid">
-
     <!-- MASTER 1 -->
     <div class="project-card" data-before="audio_mastering/CHILL_HOUSE_NO_MASTERING.mp3" data-after="audio_mastering/CHILL_HOUSE_MASTERING.mp3" data-type="master">
       <img class="project-thumbnail" src="images/MASTERING_EXAMPLE.png" alt="Master 1">
       <h3>Deep House Mastering</h3>
-
       <div class="audio-wrapper">
         <div class="controls">
           <button class="play-btn" aria-label="Reproducir">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
               <path d="M5 3v18l15-9L5 3z" fill="#FFFFFF"/>
             </svg>
           </button>
           <div class="progress"><input type="range" min="0" max="100" value="0" step="0.1"></div>
           <div class="time">0:00</div>
         </div>
-
         <div class="toggle-wrapper">
           <span class="label-before">Antes</span>
           <div class="toggle-btn"><div class="toggle-circle"></div></div>
@@ -201,23 +299,20 @@
         </div>
       </div>
     </div>
-
     <!-- MASTER 2 -->
     <div class="project-card" data-before="audio_master2_before.mp3" data-after="audio_master2_after.mp3" data-type="master">
       <img class="project-thumbnail" src="images/master2_thumb.jpg" alt="Master 2">
       <h3>Proyecto Master 2</h3>
-
       <div class="audio-wrapper">
         <div class="controls">
           <button class="play-btn" aria-label="Reproducir">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
               <path d="M5 3v18l15-9L5 3z" fill="#FFFFFF"/>
             </svg>
           </button>
           <div class="progress"><input type="range" min="0" max="100" value="0" step="0.1"></div>
           <div class="time">0:00</div>
         </div>
-
         <div class="toggle-wrapper">
           <span class="label-before">Antes</span>
           <div class="toggle-btn"><div class="toggle-circle"></div></div>
@@ -225,8 +320,8 @@
         </div>
       </div>
     </div>
-
   </div>
+
 </div>
 
 <footer>
@@ -234,10 +329,8 @@
 </footer>
 
 <script>
-/* WebAudio A/B player por tarjeta (igual que la versión anterior)
-   Cambios: el play/pause usa SVGs blancos en el botón (sin fondo).
-*/
-
+// Tu JS de WebAudio A/B player tal cual lo tenías
+// NO HAY QUE CAMBIAR NADA
 (async function() {
   if (!window.AudioContext && !window.webkitAudioContext) {
     alert('Tu navegador no soporta Web Audio API moderno. El reproductor podría no funcionar correctamente.');
@@ -261,9 +354,8 @@
     return await audioCtx.decodeAudioData(arrayBuffer.slice(0));
   }
 
-  // SVG icons (strings)
-  const PLAY_SVG = '<svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M5 3v18l15-9L5 3z" fill="#FFFFFF"/></svg>';
-  const PAUSE_SVG = '<svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="4" width="4" height="16" fill="#FFFFFF"/><rect x="15" y="4" width="4" height="16" fill="#FFFFFF"/></svg>';
+  const PLAY_SVG = '<svg width="18" height="18" viewBox="0 0 24 24"><path d="M5 3v18l15-9L5 3z" fill="#FFFFFF"/></svg>';
+  const PAUSE_SVG = '<svg width="18" height="18" viewBox="0 0 24 24"><rect x="5" y="4" width="4" height="16" fill="#FFFFFF"/><rect x="15" y="4" width="4" height="16" fill="#FFFFFF"/></svg>';
 
   document.querySelectorAll('.project-card').forEach(card => {
     const beforeUrl = card.dataset.before;
@@ -441,7 +533,7 @@
     window.addEventListener('unload', () => stopSources());
   });
 
-})(); // IIFE
+})();
 </script>
 </body>
 </html>
