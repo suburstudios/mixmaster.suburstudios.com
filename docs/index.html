@@ -43,19 +43,12 @@ h2 {
   position: relative;
 }
 
-audio {
-  width:100%;
-  margin-top:10px;
-  position: absolute;
-  top:0;
-  left:0;
-}
+audio { width:100%; margin-top:10px; }
 
 .toggle-wrapper {
   display:flex; align-items:center; justify-content:center; gap:10px;
   margin:10px 0 0 0;
   flex-shrink:0;
-  position: relative; /* para que no se superponga */
 }
 .toggle-btn {
   position:relative; width:70px; height:35px; background:#555; border-radius:20px; cursor:pointer; transition:background 0.3s;
@@ -89,10 +82,13 @@ footer { text-align:center; padding:2rem 1rem; background:#000; margin-top:4rem;
   <img class="project-thumbnail" src="images/mix1_thumb.jpg" alt="Thumbnail Proyecto Mix 1">
   <h3>Proyecto Mix 1</h3>
   <div class="audio-wrapper">
-    <audio controls class="before-audio">
+    <audio controls class="main-audio">
       <source src="audio_example_before" type="audio/mp3">
     </audio>
-    <audio controls class="after-audio">
+    <audio class="before-audio" style="display:none;">
+      <source src="audio_example_before" type="audio/mp3">
+    </audio>
+    <audio class="after-audio" style="display:none;">
       <source src="audio_example_after" type="audio/mp3">
     </audio>
   </div>
@@ -114,10 +110,13 @@ footer { text-align:center; padding:2rem 1rem; background:#000; margin-top:4rem;
   <img class="project-thumbnail" src="images/MASTERING_EXAMPLE.png" alt="Thumbnail Proyecto Master 1">
   <h3>Deep House Mastering</h3>
   <div class="audio-wrapper">
-    <audio controls class="before-audio">
+    <audio controls class="main-audio">
       <source src="audio_mastering/CHILL_HOUSE_NO_MASTERING.mp3" type="audio/mp3">
     </audio>
-    <audio controls class="after-audio">
+    <audio class="before-audio" style="display:none;">
+      <source src="audio_mastering/CHILL_HOUSE_NO_MASTERING.mp3" type="audio/mp3">
+    </audio>
+    <audio class="after-audio" style="display:none;">
       <source src="audio_mastering/CHILL_HOUSE_MASTERING.mp3" type="audio/mp3">
     </audio>
   </div>
@@ -133,10 +132,13 @@ footer { text-align:center; padding:2rem 1rem; background:#000; margin-top:4rem;
   <img class="project-thumbnail" src="images/master2_thumb.jpg" alt="Thumbnail Proyecto Master 2">
   <h3>Proyecto Master 2</h3>
   <div class="audio-wrapper">
-    <audio controls class="before-audio">
+    <audio controls class="main-audio">
       <source src="audio/master2_before.mp3" type="audio/mp3">
     </audio>
-    <audio controls class="after-audio">
+    <audio class="before-audio" style="display:none;">
+      <source src="audio/master2_before.mp3" type="audio/mp3">
+    </audio>
+    <audio class="after-audio" style="display:none;">
       <source src="audio/master2_after.mp3" type="audio/mp3">
     </audio>
   </div>
@@ -159,29 +161,28 @@ footer { text-align:center; padding:2rem 1rem; background:#000; margin-top:4rem;
 <script>
 document.querySelectorAll('.project-card').forEach(card => {
   const toggle = card.querySelector('.toggle-btn');
-  const beforeAudio = card.querySelector('audio.before-audio');
-  const afterAudio = card.querySelector('audio.after-audio');
-
-  // Inicializamos ambos audios al mismo tiempo
-  beforeAudio.volume = 1;
-  afterAudio.volume = 0;
-  afterAudio.currentTime = 0;
-  beforeAudio.currentTime = 0;
-
-  // Reproducir ambos audios para sincronización
-  beforeAudio.play();
-  afterAudio.play();
+  const mainAudio = card.querySelector('.main-audio');
+  const beforeAudio = card.querySelector('.before-audio');
+  const afterAudio = card.querySelector('.after-audio');
 
   toggle.addEventListener('click', () => {
     toggle.classList.toggle('active');
 
-    if(toggle.classList.contains('active')){
-      beforeAudio.volume = 0;
-      afterAudio.volume = 1;
-    } else {
-      beforeAudio.volume = 1;
-      afterAudio.volume = 0;
-    }
+    // Determinamos el src deseado
+    const newSrc = toggle.classList.contains('active') 
+      ? afterAudio.querySelector('source').src
+      : beforeAudio.querySelector('source').src;
+
+    const currentTime = mainAudio.currentTime;
+
+    // Fundido rápido para evitar clipeo
+    mainAudio.volume = 0;
+    mainAudio.src = newSrc;
+    mainAudio.load();
+    mainAudio.currentTime = currentTime;
+    mainAudio.play();
+
+    setTimeout(() => { mainAudio.volume = 1; }, 50);
   });
 });
 </script>
