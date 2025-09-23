@@ -46,7 +46,7 @@ audio { width:100%; margin-top:10px; }
 
 .toggle-wrapper {
   display:flex; align-items:center; justify-content:center; gap:10px;
-  margin:10px 0 0 0; /* siempre debajo del reproductor */
+  margin:10px 0 0 0;
   flex-shrink:0;
 }
 .toggle-btn {
@@ -61,7 +61,6 @@ audio { width:100%; margin-top:10px; }
 
 footer { text-align:center; padding:2rem 1rem; background:#000; margin-top:4rem; }
 
-/* Divisor para añadir nuevas tarjetas, oculto en producción */
 .divider { display:none; }
 </style>
 </head>
@@ -95,7 +94,6 @@ footer { text-align:center; padding:2rem 1rem; background:#000; margin-top:4rem;
     <span class="label-after">Después</span>
   </div>
 </div>
-<!-- FIN Tarjeta proyecto 1 -->
 
 <div class="divider"></div>
 </div> <!-- FIN grid mezcla -->
@@ -121,7 +119,6 @@ footer { text-align:center; padding:2rem 1rem; background:#000; margin-top:4rem;
     <span class="label-after">Después</span>
   </div>
 </div>
-<!-- FIN Tarjeta Master 1 -->
 
 <!-- Tarjeta Master 2 -->
 <div class="project-card" data-type="master">
@@ -141,7 +138,6 @@ footer { text-align:center; padding:2rem 1rem; background:#000; margin-top:4rem;
     <span class="label-after">Después</span>
   </div>
 </div>
-<!-- FIN Tarjeta Master 2 -->
 
 <div class="divider"></div>
 </div> <!-- FIN grid mastering -->
@@ -163,24 +159,28 @@ document.querySelectorAll('.project-card').forEach(card => {
     const fromAudio = isActive ? afterAudio : beforeAudio;
     const toAudio = isActive ? beforeAudio : afterAudio;
 
-    // Guardar el tiempo actual del que está sonando
     const currentTime = fromAudio.currentTime;
 
-    // Pausar el que estaba en reproducción
-    fromAudio.pause();
+    // Crossfade 50ms
+    const fadeTime = 0.05; // 50ms
+    const intervalTime = 0.005; // 5ms pasos
+    const steps = fadeTime / intervalTime;
+    let step = 0;
 
-    // Ocultar y mostrar
-    fromAudio.style.display = 'none';
-    toAudio.style.display = 'block';
-
-    // Igualar el tiempo y reproducir
+    toAudio.volume = 0;
     toAudio.currentTime = currentTime;
+    toAudio.style.display = 'block';
     toAudio.play();
 
-    // Alternar estado del botón
-    toggle.classList.toggle('active');
-  });
-});
-</script>
-</body>
-</html>
+    const fadeInterval = setInterval(() => {
+      step++;
+      const fromVol = Math.max(0, 1 - step / steps);
+      const toVol = Math.min(1, step / steps);
+      fromAudio.volume = fromVol;
+      toAudio.volume = toVol;
+
+      if (step >= steps) {
+        clearInterval(fadeInterval);
+        fromAudio.pause();
+        fromAudio.style.display = 'none';
+        fromAudio.volume = 1;
