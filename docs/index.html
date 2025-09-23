@@ -167,22 +167,39 @@ document.querySelectorAll('.project-card').forEach(card => {
 
   toggle.addEventListener('click', () => {
     toggle.classList.toggle('active');
-
-    // Determinamos el src deseado
     const newSrc = toggle.classList.contains('active') 
       ? afterAudio.querySelector('source').src
       : beforeAudio.querySelector('source').src;
 
     const currentTime = mainAudio.currentTime;
+    const fadeDuration = 150; // ms, aumenta si quieres más suave
+    const steps = 15;
+    const stepTime = fadeDuration / steps;
+    let currentStep = 0;
 
-    // Fundido rápido para evitar clipeo
-    mainAudio.volume = 0;
-    mainAudio.src = newSrc;
-    mainAudio.load();
-    mainAudio.currentTime = currentTime;
-    mainAudio.play();
+    // Fade out
+    const fadeOut = setInterval(() => {
+      currentStep++;
+      mainAudio.volume = 1 - currentStep / steps;
+      if (currentStep >= steps) {
+        clearInterval(fadeOut);
+        mainAudio.src = newSrc;
+        mainAudio.load();
+        mainAudio.currentTime = currentTime;
+        mainAudio.play();
 
-    setTimeout(() => { mainAudio.volume = 1; }, 50);
+        // Fade in
+        currentStep = 0;
+        const fadeIn = setInterval(() => {
+          currentStep++;
+          mainAudio.volume = currentStep / steps;
+          if (currentStep >= steps) {
+            clearInterval(fadeIn);
+            mainAudio.volume = 1;
+          }
+        }, stepTime);
+      }
+    }, stepTime);
   });
 });
 </script>
