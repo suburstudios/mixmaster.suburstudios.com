@@ -40,14 +40,22 @@ h2 {
 .audio-wrapper {
   width:100%; display:flex; flex-direction:column; align-items:center;
   margin-top:10px;
+  position: relative;
 }
 
-audio { width:100%; margin-top:10px; }
+audio {
+  width:100%;
+  margin-top:10px;
+  position: absolute;
+  top:0;
+  left:0;
+}
 
 .toggle-wrapper {
   display:flex; align-items:center; justify-content:center; gap:10px;
   margin:10px 0 0 0;
   flex-shrink:0;
+  position: relative; /* para que no se superponga */
 }
 .toggle-btn {
   position:relative; width:70px; height:35px; background:#555; border-radius:20px; cursor:pointer; transition:background 0.3s;
@@ -84,7 +92,7 @@ footer { text-align:center; padding:2rem 1rem; background:#000; margin-top:4rem;
     <audio controls class="before-audio">
       <source src="audio_example_before" type="audio/mp3">
     </audio>
-    <audio controls class="after-audio" style="display:none;">
+    <audio controls class="after-audio">
       <source src="audio_example_after" type="audio/mp3">
     </audio>
   </div>
@@ -109,7 +117,7 @@ footer { text-align:center; padding:2rem 1rem; background:#000; margin-top:4rem;
     <audio controls class="before-audio">
       <source src="audio_mastering/CHILL_HOUSE_NO_MASTERING.mp3" type="audio/mp3">
     </audio>
-    <audio controls class="after-audio" style="display:none;">
+    <audio controls class="after-audio">
       <source src="audio_mastering/CHILL_HOUSE_MASTERING.mp3" type="audio/mp3">
     </audio>
   </div>
@@ -128,7 +136,7 @@ footer { text-align:center; padding:2rem 1rem; background:#000; margin-top:4rem;
     <audio controls class="before-audio">
       <source src="audio/master2_before.mp3" type="audio/mp3">
     </audio>
-    <audio controls class="after-audio" style="display:none;">
+    <audio controls class="after-audio">
       <source src="audio/master2_after.mp3" type="audio/mp3">
     </audio>
   </div>
@@ -154,25 +162,26 @@ document.querySelectorAll('.project-card').forEach(card => {
   const beforeAudio = card.querySelector('audio.before-audio');
   const afterAudio = card.querySelector('audio.after-audio');
 
+  // Inicializamos ambos audios al mismo tiempo
+  beforeAudio.volume = 1;
+  afterAudio.volume = 0;
+  afterAudio.currentTime = 0;
+  beforeAudio.currentTime = 0;
+
+  // Reproducir ambos audios para sincronización
+  beforeAudio.play();
+  afterAudio.play();
+
   toggle.addEventListener('click', () => {
     toggle.classList.toggle('active');
 
-    const fromAudio = toggle.classList.contains('active') ? beforeAudio : afterAudio;
-    const toAudio   = toggle.classList.contains('active') ? afterAudio : beforeAudio;
-
-    const currentTime = fromAudio.currentTime;
-
-    // Evitar clipeo usando fundido mínimo
-    toAudio.style.display = 'block';
-    toAudio.currentTime = currentTime;
-    toAudio.volume = 0.001; // volumen casi 0 para evitar click
-    toAudio.play();
-
-    setTimeout(() => {
-      fromAudio.pause();
-      fromAudio.style.display = 'none';
-      toAudio.volume = 1;
-    }, 20);
+    if(toggle.classList.contains('active')){
+      beforeAudio.volume = 0;
+      afterAudio.volume = 1;
+    } else {
+      beforeAudio.volume = 1;
+      afterAudio.volume = 0;
+    }
   });
 });
 </script>
