@@ -46,7 +46,7 @@ audio { width:100%; margin-top:10px; }
 
 .toggle-wrapper {
   display:flex; align-items:center; justify-content:center; gap:10px;
-  margin:10px 0 0 0; 
+  margin:10px 0 0 0; /* siempre debajo del reproductor */
   flex-shrink:0;
 }
 .toggle-btn {
@@ -61,6 +61,7 @@ audio { width:100%; margin-top:10px; }
 
 footer { text-align:center; padding:2rem 1rem; background:#000; margin-top:4rem; }
 
+/* Divisor para añadir nuevas tarjetas, oculto en producción */
 .divider { display:none; }
 </style>
 </head>
@@ -76,7 +77,7 @@ footer { text-align:center; padding:2rem 1rem; background:#000; margin-top:4rem;
 <h2>Proyectos de Mezcla</h2>
 <div class="projects-grid">
 
-<!-- Tarjeta Mix ejemplo -->
+<!-- Tarjeta de proyecto 1 -->
 <div class="project-card" data-type="mix">
   <img class="project-thumbnail" src="images/mix1_thumb.jpg" alt="Thumbnail Proyecto Mix 1">
   <h3>Proyecto Mix 1</h3>
@@ -94,13 +95,15 @@ footer { text-align:center; padding:2rem 1rem; background:#000; margin-top:4rem;
     <span class="label-after">Después</span>
   </div>
 </div>
+<!-- FIN Tarjeta proyecto 1 -->
 
+<div class="divider"></div>
 </div> <!-- FIN grid mezcla -->
 
 <h2 style="margin-top:3rem;">Proyectos de Mastering</h2>
 <div class="projects-grid">
 
-<!-- Tarjeta Master 1 (corregida) -->
+<!-- Tarjeta Master 1 -->
 <div class="project-card" data-type="master">
   <img class="project-thumbnail" src="images/master1_thumb.jpg" alt="Thumbnail Proyecto Master 1">
   <h3>Proyecto Master 1</h3>
@@ -120,6 +123,27 @@ footer { text-align:center; padding:2rem 1rem; background:#000; margin-top:4rem;
 </div>
 <!-- FIN Tarjeta Master 1 -->
 
+<!-- Tarjeta Master 2 -->
+<div class="project-card" data-type="master">
+  <img class="project-thumbnail" src="images/master2_thumb.jpg" alt="Thumbnail Proyecto Master 2">
+  <h3>Proyecto Master 2</h3>
+  <div class="audio-wrapper">
+    <audio controls class="before-audio">
+      <source src="audio/master2_before.mp3" type="audio/mp3">
+    </audio>
+    <audio controls class="after-audio" style="display:none;">
+      <source src="audio/master2_after.mp3" type="audio/mp3">
+    </audio>
+  </div>
+  <div class="toggle-wrapper">
+    <span class="label-before">Antes</span>
+    <div class="toggle-btn"><div class="toggle-circle"></div></div>
+    <span class="label-after">Después</span>
+  </div>
+</div>
+<!-- FIN Tarjeta Master 2 -->
+
+<div class="divider"></div>
 </div> <!-- FIN grid mastering -->
 
 </div> <!-- FIN projects-wrapper -->
@@ -129,43 +153,32 @@ footer { text-align:center; padding:2rem 1rem; background:#000; margin-top:4rem;
 </footer>
 
 <script>
-// SOLO para sección Mastering
-document.querySelectorAll('.project-card[data-type="master"]').forEach(card => {
+document.querySelectorAll('.project-card').forEach(card => {
   const toggle = card.querySelector('.toggle-btn');
   const beforeAudio = card.querySelector('audio.before-audio');
   const afterAudio = card.querySelector('audio.after-audio');
 
-  // Config inicial
-  afterAudio.muted = true;
-  beforeAudio.muted = false;
-
-  // Cuando se da play a uno, arrancamos ambos en paralelo
-  beforeAudio.addEventListener('play', () => afterAudio.play());
-  beforeAudio.addEventListener('pause', () => afterAudio.pause());
-  afterAudio.addEventListener('play', () => beforeAudio.play());
-  afterAudio.addEventListener('pause', () => beforeAudio.pause());
-
-  // Sincronizar posiciones
-  beforeAudio.addEventListener('timeupdate', () => {
-    if (Math.abs(beforeAudio.currentTime - afterAudio.currentTime) > 0.1) {
-      afterAudio.currentTime = beforeAudio.currentTime;
-    }
-  });
-
-  // Toggle
   toggle.addEventListener('click', () => {
+    const isActive = toggle.classList.contains('active');
+    const fromAudio = isActive ? afterAudio : beforeAudio;
+    const toAudio = isActive ? beforeAudio : afterAudio;
+
+    // Guardar el tiempo actual del que está sonando
+    const currentTime = fromAudio.currentTime;
+
+    // Pausar el que estaba en reproducción
+    fromAudio.pause();
+
+    // Ocultar y mostrar
+    fromAudio.style.display = 'none';
+    toAudio.style.display = 'block';
+
+    // Igualar el tiempo y reproducir
+    toAudio.currentTime = currentTime;
+    toAudio.play();
+
+    // Alternar estado del botón
     toggle.classList.toggle('active');
-    if(toggle.classList.contains('active')){
-      beforeAudio.style.display='none';
-      afterAudio.style.display='block';
-      beforeAudio.muted = true;
-      afterAudio.muted = false;
-    } else {
-      afterAudio.style.display='none';
-      beforeAudio.style.display='block';
-      afterAudio.muted = true;
-      beforeAudio.muted = false;
-    }
   });
 });
 </script>
