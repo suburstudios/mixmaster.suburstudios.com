@@ -155,32 +155,26 @@ document.querySelectorAll('.project-card').forEach(card => {
   const afterAudio = card.querySelector('audio.after-audio');
 
   toggle.addEventListener('click', () => {
-    const isActive = toggle.classList.contains('active');
-    const fromAudio = isActive ? afterAudio : beforeAudio;
-    const toAudio = isActive ? beforeAudio : afterAudio;
+    toggle.classList.toggle('active');
+
+    const fromAudio = toggle.classList.contains('active') ? beforeAudio : afterAudio;
+    const toAudio   = toggle.classList.contains('active') ? afterAudio : beforeAudio;
 
     const currentTime = fromAudio.currentTime;
 
-    // Crossfade 50ms
-    const fadeTime = 0.05; // 50ms
-    const intervalTime = 0.005; // 5ms pasos
-    const steps = fadeTime / intervalTime;
-    let step = 0;
-
-    toAudio.volume = 0;
-    toAudio.currentTime = currentTime;
+    // Evitar clipeo usando fundido mínimo
     toAudio.style.display = 'block';
+    toAudio.currentTime = currentTime;
+    toAudio.volume = 0.001; // volumen casi 0 para evitar click
     toAudio.play();
 
-    const fadeInterval = setInterval(() => {
-      step++;
-      const fromVol = Math.max(0, 1 - step / steps);
-      const toVol = Math.min(1, step / steps);
-      fromAudio.volume = fromVol;
-      toAudio.volume = toVol;
-
-      if (step >= steps) {
-        clearInterval(fadeInterval);
-        fromAudio.pause();
-        fromAudio.style.display = 'none';
-        fromAudio.volume = 1;
+    setTimeout(() => {
+      fromAudio.pause();
+      fromAudio.style.display = 'none';
+      toAudio.volume = 1;
+    }, 20);
+  });
+});
+</script>
+</body>
+</html>
