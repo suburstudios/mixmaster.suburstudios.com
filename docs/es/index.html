@@ -1,178 +1,541 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MixMaster - Suburbio Studios</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Mix // Master - Suburbio Studios</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
+<link rel="icon" href="/favicon.png" type="image/png">
+
 <style>
-body {
-  margin:0; padding:0; background:#111; color:#f1f1f1; font-family:'Montserrat',sans-serif;
-}
-header {
-  text-align:center; padding:2rem 1rem; background:#000;
-}
-header h1 { margin:0; font-weight:300; font-size:2.5rem; }
-header p { font-weight:400; color:#aaa; margin-top:0.5rem; }
+  :root{
+    --bg:#111;
+    --card:#1c1c1c;
+    --accent:#ff4a4a;
+    --muted:#aaa;
+    --white:#f1f1f1;
+  }
+  body{
+    margin:0;
+    padding:0;
+    background:var(--bg);
+    color:var(--white);
+    font-family:Montserrat,system-ui,Segoe UI,Roboto,sans-serif;
+  }
+  header{
+    background:#000;
+    padding:2rem 1rem;
+    text-align:center;
+  }
+  header h1{
+    margin:0;
+    font-weight:300;
+    font-size:2rem;
+  }
+  header p{
+    margin:6px 0 0;
+    color:var(--muted);
+  }
 
-.projects-wrapper { max-width:1200px; margin:2rem auto; padding:0 1rem; }
-h2 {
-  text-align:center; margin-bottom:1rem; border-bottom:2px solid #ff4a4a; display:inline-block; padding-bottom:5px;
-}
+  .projects-wrapper{
+    max-width:1200px;
+    margin:2rem auto;
+    padding:0 1rem;
+  }
+  h2{
+    text-align:center;
+    margin-bottom:1rem;
+    display:inline-block;
+    border-bottom:2px solid var(--accent);
+    padding-bottom:6px;
+  }
 
-.projects-grid {
-  display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:20px; margin-top:1rem;
-}
+  .projects-grid{
+    display:grid;
+    gap:20px;
+    margin-top:1rem;
+    grid-template-columns:repeat(1,1fr);
+  }
+  @media (min-width:700px){
+    .projects-grid{
+      grid-template-columns:repeat(2,1fr);
+    }
+  }
 
-.project-card {
-  background:#1c1c1c; padding:20px; border-radius:12px;
-  box-shadow:0 4px 12px rgba(0,0,0,0.5); transition:transform 0.3s;
-  display:flex; flex-direction:column; align-items:center;
-}
-.project-card:hover { transform:translateY(-5px); }
+  .project-card{
+    background:var(--card);
+    padding:18px;
+    border-radius:12px;
+    box-shadow:0 6px 18px rgba(0,0,0,.5);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+  }
+  .project-card:hover{
+    transform:translateY(-4px);
+    transition:transform .18s;
+  }
+  .project-thumbnail{
+    width:100%;
+    height:160px;
+    object-fit:cover;
+    border-radius:8px;
+    margin-bottom:12px;
+  }
+  .project-card h3{
+    margin:0 0 8px;
+    font-size:16px;
+    text-align:center;
+  }
 
-.project-thumbnail {
-  width:100%; max-height:180px; object-fit:cover; border-radius:10px; margin-bottom:15px;
-}
+  .audio-wrapper{
+    width:100%;
+    margin-top:8px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+  }
+  .controls{
+    width:100%;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .play-btn{
+    background:transparent;
+    border:0;
+    padding:6px;
+    margin:0;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    color:var(--white);
+    width:36px;
+    height:36px;
+    border-radius:50%;
+    outline:none;
+  }
+  .play-btn:focus{
+    box-shadow:0 0 0 2px rgba(255,74,74,0.15);
+  }
+  .play-btn svg{display:block}
+  .time{
+    font-family:monospace;
+    font-size:13px;
+    color:var(--muted);
+    min-width:60px;
+    text-align:center;
+  }
+  .progress{flex:1}
+  input[type=range]{width:100%}
 
-.project-card h3 { margin-bottom:10px; font-size:18px; text-align:center; }
+  .toggle-wrapper{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    margin-top:10px;
+  }
+  .toggle-btn{
+    position:relative;
+    width:70px;
+    height:34px;
+    background:#555;
+    border-radius:20px;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+  }
+  .toggle-circle{
+    position:absolute;
+    width:32px;
+    height:32px;
+    background:#fff;
+    border-radius:50%;
+    top:1px;
+    left:1px;
+    transition:left .18s;
+  }
+  .toggle-btn.active{
+    background:var(--accent);
+  }
+  .toggle-btn.active .toggle-circle{
+    left:36px;
+  }
+  .label-before,.label-after{
+    font-weight:700;
+    font-size:14px;
+    color:var(--white);
+  }
 
-.audio-wrapper {
-  width:100%; display:flex; flex-direction:column; align-items:center;
-  margin-top:10px;
-}
-
-audio { width:100%; margin-top:10px; }
-
-.toggle-wrapper {
-  display:flex; align-items:center; justify-content:center; gap:10px;
-  margin:10px 0 0 0; /* siempre debajo del reproductor */
-  flex-shrink:0;
-}
-.toggle-btn {
-  position:relative; width:70px; height:35px; background:#555; border-radius:20px; cursor:pointer; transition:background 0.3s;
-}
-.toggle-btn.active { background:#ff4a4a; }
-.toggle-circle {
-  position:absolute; width:33px; height:33px; background:#fff; border-radius:50%; top:1px; left:1px; transition:left 0.3s;
-}
-.toggle-btn.active .toggle-circle { left:36px; }
-.label-before, .label-after { font-size:14px; font-weight:700; white-space:nowrap; }
-
-footer { text-align:center; padding:2rem 1rem; background:#000; margin-top:4rem; }
-
-/* Divisor para añadir nuevas tarjetas, oculto en producción */
-.divider { display:none; }
+  footer{
+    text-align:center;
+    padding:2rem 1rem;
+    background:#000;
+    margin-top:2.5rem;
+    color:var(--muted);
+  }
+  @media (max-width:420px){
+    .controls{flex-direction:column;align-items:stretch}
+    .time{min-width:auto}
+  }
 </style>
 </head>
-
 <body>
 <header>
-<h1>Suburbio Studios</h1>
-<p>Ejemplos de Mezcla y Mastering</p>
+  <h1><a href="https://suburstudios.com" style="color:inherit; text-decoration:none;">Suburbio Studios</a></h1>
+  <p>Proyectos de Mezcla y Mastering</p>
 </header>
 
 <div class="projects-wrapper">
 
-<h2>Proyectos de Mezcla</h2>
-<div class="projects-grid">
+  <h2>Proyectos de Mezcla </h2>
+  <div class="projects-grid">
+    <!-- MIX 1 -->
+    <div class="project-card" data-before="en/audio_example1_before.mp3" data-after="en/audio_example1_after.mp3" data-type="mix">
+      <img class="project-thumbnail" src="images/mix_example.png" alt="Mix 1">
+      <h3>Proyecto de Mezcla 1</h3>
+      <div class="audio-wrapper">
+        <div class="controls">
+          <button class="play-btn" aria-label="Reproducir">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M5 3v18l15-9L5 3z" fill="#FFFFFF"/>
+            </svg>
+          </button>
+          <div class="progress"><input type="range" min="0" max="100" value="0" step="0.1"></div>
+          <div class="time">0:00</div>
+        </div>
+        <div class="toggle-wrapper">
+          <span class="label-before">Antes</span>
+          <div class="toggle-btn"><div class="toggle-circle"></div></div>
+          <span class="label-after">Después</span>
+        </div>
+      </div>
+    </div>
+    <!-- MIX 2 -->
+    <div class="project-card" data-before="audio_example2_before.mp3" data-after="audio_example2_after.mp3" data-type="mix">
+      <img class="project-thumbnail" src="images/mix_example.png" alt="Mix 2">
+      <h3>Proyecto de Mezcla 2</h3>
+      <div class="audio-wrapper">
+        <div class="controls">
+          <button class="play-btn" aria-label="Reproducir">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M5 3v18l15-9L5 3z" fill="#FFFFFF"/>
+            </svg>
+          </button>
+          <div class="progress"><input type="range" min="0" max="100" value="0" step="0.1"></div>
+          <div class="time">0:00</div>
+        </div>
+        <div class="toggle-wrapper">
+          <span class="label-before">Antes</span>
+          <div class="toggle-btn"><div class="toggle-circle"></div></div>
+          <span class="label-after">Después</span>
+        </div>
+      </div>
+    </div>
+    <!-- MIX 3 -->
+    <div class="project-card" data-before="audio_example3_before.mp3" data-after="audio_example3_after.mp3" data-type="mix">
+      <img class="project-thumbnail" src="images/mix_example.png" alt="Mix 3">
+      <h3>Proyecto de Mezcla 3</h3>
+      <div class="audio-wrapper">
+        <div class="controls">
+          <button class="play-btn" aria-label="Reproducir">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M5 3v18l15-9L5 3z" fill="#FFFFFF"/>
+            </svg>
+          </button>
+          <div class="progress"><input type="range" min="0" max="100" value="0" step="0.1"></div>
+          <div class="time">0:00</div>
+        </div>
+        <div class="toggle-wrapper">
+          <span class="label-before">Antes</span>
+          <div class="toggle-btn"><div class="toggle-circle"></div></div>
+          <span class="label-after">Después</span>
+        </div>
+      </div>
+    </div>
+    <!-- MIX 4 -->
+    <div class="project-card" data-before="audio_example4_before.mp3" data-after="audio_example4_after.mp3" data-type="mix">
+      <img class="project-thumbnail" src="images/mix_example.png" alt="Mix 4">
+      <h3>Proyecto de Mezcla 4</h3>
+      <div class="audio-wrapper">
+        <div class="controls">
+          <button class="play-btn" aria-label="Reproducir">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M5 3v18l15-9L5 3z" fill="#FFFFFF"/>
+            </svg>
+          </button>
+          <div class="progress"><input type="range" min="0" max="100" value="0" step="0.1"></div>
+          <div class="time">0:00</div>
+        </div>
+        <div class="toggle-wrapper">
+          <span class="label-before">Antes</span>
+          <div class="toggle-btn"><div class="toggle-circle"></div></div>
+          <span class="label-after">Después</span>
+        </div>
+      </div>
+    </div>
+  </div>
 
-<!-- Tarjeta de proyecto 1 -->
-<div class="project-card" data-type="mix">
-  <img class="project-thumbnail" src="images/mix1_thumb.jpg" alt="Thumbnail Proyecto Mix 1">
-  <h3>Proyecto Mix 1</h3>
-  <div class="audio-wrapper">
-    <audio controls class="before-audio">
-      <source src="audio/mix1_before.mp3" type="audio/mp3">
-    </audio>
-    <audio controls class="after-audio" style="display:none;">
-      <source src="audio/mix1_after.mp3" type="audio/mp3">
-    </audio>
+  <h2 style="margin-top:2.5rem">Proyectos de Mastering</h2>
+  <div class="projects-grid">
+    <!-- MASTER 1 -->
+    <div class="project-card" data-before="/audio_mastering/CHILL_HOUSE_NO_MASTERING.mp3" data-after="/audio_mastering/CHILL_HOUSE_MASTERING.mp3" data-type="master">
+      <img class="project-thumbnail" src="images/MASTERING_EXAMPLE.png" alt="Master 1">
+      <h3>Deep House Mastering</h3>
+      <div class="audio-wrapper">
+        <div class="controls">
+          <button class="play-btn" aria-label="Reproducir">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M5 3v18l15-9L5 3z" fill="#FFFFFF"/>
+            </svg>
+          </button>
+          <div class="progress"><input type="range" min="0" max="100" value="0" step="0.1"></div>
+          <div class="time">0:00</div>
+        </div>
+        <div class="toggle-wrapper">
+          <span class="label-before">Antes</span>
+          <div class="toggle-btn"><div class="toggle-circle"></div></div>
+          <span class="label-after">Después</span>
+        </div>
+      </div>
+    </div>
+    <!-- MASTER 2 -->
+    <div class="project-card" data-before="/audio_mastering/Lillyhammer_Wicked_No_Mastering.mp3" data-after="/audio_mastering/Lillyhammer_Wicked_Mastering.mp3" data-type="master">
+      <img class="project-thumbnail" src="images/Lilyhammerband.png" alt="Master 2">
+      <h3>Lillyhammer - Wicked // Mastering</h3>
+      <div class="audio-wrapper">
+        <div class="controls">
+          <button class="play-btn" aria-label="Reproducir">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M5 3v18l15-9L5 3z" fill="#FFFFFF"/>
+            </svg>
+          </button>
+          <div class="progress"><input type="range" min="0" max="100" value="0" step="0.1"></div>
+          <div class="time">0:00</div>
+        </div>
+        <div class="toggle-wrapper">
+          <span class="label-before">Antes</span>
+          <div class="toggle-btn"><div class="toggle-circle"></div></div>
+          <span class="label-after">Después</span>
+        </div>
+      </div>
+    </div>
   </div>
-  <div class="toggle-wrapper">
-    <span class="label-before">Antes</span>
-    <div class="toggle-btn"><div class="toggle-circle"></div></div>
-    <span class="label-after">Después</span>
-  </div>
+
 </div>
-<!-- FIN Tarjeta proyecto 1 -->
-
-<!-- Tarjeta de proyecto 2 -->
-<div class="project-card" data-type="mix">
-  <img class="project-thumbnail" src="images/mix2_thumb.jpg" alt="Thumbnail Proyecto Mix 2">
-  <h3>Proyecto Mix 2</h3>
-  <div class="audio-wrapper">
-    <audio controls class="before-audio">
-      <source src="audio/mix2_before.mp3" type="audio/mp3">
-    </audio>
-    <audio controls class="after-audio" style="display:none;">
-      <source src="audio/mix2_after.mp3" type="audio/mp3">
-    </audio>
-  </div>
-  <div class="toggle-wrapper">
-    <span class="label-before">Antes</span>
-    <div class="toggle-btn"><div class="toggle-circle"></div></div>
-    <span class="label-after">Después</span>
-  </div>
-</div>
-<!-- FIN Tarjeta proyecto 2 -->
-
-<div class="divider"></div>
-</div> <!-- FIN grid mezcla -->
-
-<h2 style="margin-top:3rem;">Proyectos de Mastering</h2>
-<div class="projects-grid">
-
-<!-- Tarjeta Master 1 -->
-<div class="project-card" data-type="master">
-  <img class="project-thumbnail" src="images/master1_thumb.jpg" alt="Thumbnail Proyecto Master 1">
-  <h3>Proyecto Master 1</h3>
-  <div class="audio-wrapper">
-    <audio controls class="before-audio">
-      <source src="audio/master1_before.mp3" type="audio/mp3">
-    </audio>
-    <audio controls class="after-audio" style="display:none;">
-      <source src="audio/master1_after.mp3" type="audio/mp3">
-    </audio>
-  </div>
-  <div class="toggle-wrapper">
-    <span class="label-before">Antes</span>
-    <div class="toggle-btn"><div class="toggle-circle"></div></div>
-    <span class="label-after">Después</span>
-  </div>
-</div>
-<!-- FIN Tarjeta Master 1 -->
-
-<div class="divider"></div>
-</div> <!-- FIN grid mastering -->
-
-</div> <!-- FIN projects-wrapper -->
 
 <footer>
-<p>&copy; 2025 Suburbio Studios - MixMaster</p>
+  <p>&copy; 2025 Suburbio Studios - MixMaster</p>
 </footer>
 
 <script>
-document.querySelectorAll('.project-card').forEach(card => {
-  const toggle = card.querySelector('.toggle-btn');
-  const beforeAudio = card.querySelector('audio.before-audio');
-  const afterAudio = card.querySelector('audio.after-audio');
+// Tu JS de WebAudio A/B player tal cual lo tenías
+// NO HAY QUE CAMBIAR NADA
+(async function() {
+  if (!window.AudioContext && !window.webkitAudioContext) {
+    alert('Your browser doesn't support the modern Web Audio API. The player may not work properly.');
+    return;
+  }
 
-  toggle.addEventListener('click', () => {
-    toggle.classList.toggle('active');
-    if(toggle.classList.contains('active')){
-      beforeAudio.style.display='none';
-      afterAudio.style.display='block';
-      afterAudio.currentTime=0;
-      afterAudio.play();
-    } else {
-      afterAudio.style.display='none';
-      beforeAudio.style.display='block';
-      beforeAudio.currentTime=0;
-      beforeAudio.play();
+  const AudioCtx = window.AudioContext || window.webkitAudioContext;
+  const audioCtx = new AudioCtx();
+
+  function fmtTime(t) {
+    if (!isFinite(t) || t < 0) return '0:00';
+    const m = Math.floor(t / 60);
+    const s = Math.floor(t % 60).toString().padStart(2,'0');
+    return `${m}:${s}`;
+  }
+
+  async function loadBuffer(url) {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('Error cargando ' + url);
+    const arrayBuffer = await res.arrayBuffer();
+    return await audioCtx.decodeAudioData(arrayBuffer.slice(0));
+  }
+
+  const PLAY_SVG = '<svg width="18" height="18" viewBox="0 0 24 24"><path d="M5 3v18l15-9L5 3z" fill="#FFFFFF"/></svg>';
+  const PAUSE_SVG = '<svg width="18" height="18" viewBox="0 0 24 24"><rect x="5" y="4" width="4" height="16" fill="#FFFFFF"/><rect x="15" y="4" width="4" height="16" fill="#FFFFFF"/></svg>';
+
+  document.querySelectorAll('.project-card').forEach(card => {
+    const beforeUrl = card.dataset.before;
+    const afterUrl = card.dataset.after;
+
+    const playBtn = card.querySelector('.play-btn');
+    const rangeEl = card.querySelector('input[type=range]');
+    const timeEl = card.querySelector('.time');
+    const toggle = card.querySelector('.toggle-btn');
+
+    let beforeBuffer = null, afterBuffer = null;
+    let duration = 0;
+    let isLoaded = false;
+    let isPlaying = false;
+    let activeIsAfter = false;
+    let position = 0;
+    let startTimestamp = 0;
+    let beforeGainNode = audioCtx.createGain();
+    let afterGainNode = audioCtx.createGain();
+    let masterGain = audioCtx.createGain(); masterGain.gain.value = 1;
+    beforeGainNode.connect(masterGain); afterGainNode.connect(masterGain); masterGain.connect(audioCtx.destination);
+
+    let beforeSource = null, afterSource = null;
+
+    playBtn.innerHTML = PLAY_SVG;
+    playBtn.setAttribute('aria-pressed', 'false');
+
+    playBtn.disabled = true;
+    toggle.classList.remove('ready');
+
+    (async () => {
+      try {
+        beforeBuffer = await loadBuffer(beforeUrl);
+        afterBuffer  = await loadBuffer(afterUrl);
+        duration = Math.max(beforeBuffer.duration, afterBuffer.duration);
+        rangeEl.max = Math.floor(duration * 100) / 100;
+        isLoaded = true;
+        playBtn.disabled = false;
+        toggle.classList.add('ready');
+        beforeGainNode.gain.value = 1;
+        afterGainNode.gain.value = 0;
+        timeEl.textContent = fmtTime(0) + ' / ' + fmtTime(duration);
+      } catch (e) {
+        console.error('Carga buffers', e);
+        timeEl.textContent = 'Error cargando audio';
+      }
+    })();
+
+    function createSources(offset = 0) {
+      stopSources();
+
+      beforeSource = audioCtx.createBufferSource();
+      beforeSource.buffer = beforeBuffer;
+      beforeSource.connect(beforeGainNode);
+      beforeSource.onended = () => {
+        if (!isPlaying) return;
+        const elapsed = audioCtx.currentTime - startTimestamp;
+        if (position + elapsed >= duration - 0.05) stop();
+      };
+
+      afterSource = audioCtx.createBufferSource();
+      afterSource.buffer = afterBuffer;
+      afterSource.connect(afterGainNode);
+      afterSource.onended = () => {
+        if (!isPlaying) return;
+        const elapsed = audioCtx.currentTime - startTimestamp;
+        if (position + elapsed >= duration - 0.05) stop();
+      };
+
+      const now = audioCtx.currentTime;
+      try { beforeSource.start(now, Math.min(offset, beforeBuffer.duration)); } catch(e){}
+      try { afterSource.start(now, Math.min(offset, afterBuffer.duration)); } catch(e){}
+      startTimestamp = now;
     }
+
+    function stopSources() {
+      try { if (beforeSource) { beforeSource.onended = null; beforeSource.stop(0); } } catch(e){}
+      try { if (afterSource) { afterSource.onended = null; afterSource.stop(0); } } catch(e){}
+      beforeSource = null; afterSource = null;
+    }
+
+    function play() {
+      if (!isLoaded) return;
+      if (audioCtx.state === 'suspended') { audioCtx.resume(); }
+      createSources(position);
+      isPlaying = true;
+      startTimestamp = audioCtx.currentTime;
+      playBtn.innerHTML = PAUSE_SVG;
+      playBtn.setAttribute('aria-pressed', 'true');
+      raf();
+    }
+
+    function pause() {
+      if (!isPlaying) return;
+      position = position + (audioCtx.currentTime - startTimestamp);
+      stopSources();
+      isPlaying = false;
+      playBtn.innerHTML = PLAY_SVG;
+      playBtn.setAttribute('aria-pressed', 'false');
+    }
+
+    function stop() {
+      pause();
+      position = 0;
+      updateUI();
+    }
+
+    function seek(toSec) {
+      position = Math.min(Math.max(0, toSec), duration);
+      if (isPlaying) {
+        createSources(position);
+        startTimestamp = audioCtx.currentTime;
+      } else {
+        updateUI();
+      }
+    }
+
+    function crossfade(toAfter, fadeTime = 0.12) {
+      const now = audioCtx.currentTime;
+      beforeGainNode.gain.cancelScheduledValues(now);
+      afterGainNode.gain.cancelScheduledValues(now);
+      beforeGainNode.gain.setValueAtTime(beforeGainNode.gain.value, now);
+      afterGainNode.gain.setValueAtTime(afterGainNode.gain.value, now);
+      if (toAfter) {
+        beforeGainNode.gain.linearRampToValueAtTime(0, now + fadeTime);
+        afterGainNode.gain.linearRampToValueAtTime(1, now + fadeTime);
+      } else {
+        beforeGainNode.gain.linearRampToValueAtTime(1, now + fadeTime);
+        afterGainNode.gain.linearRampToValueAtTime(0, now + fadeTime);
+      }
+    }
+
+    playBtn.addEventListener('click', () => {
+      if (!isLoaded) return;
+      if (!isPlaying) {
+        beforeGainNode.gain.value = activeIsAfter ? 0 : 1;
+        afterGainNode.gain.value  = activeIsAfter ? 1 : 0;
+        play();
+      } else {
+        pause();
+      }
+    });
+
+    rangeEl.addEventListener('input', (e) => {
+      const val = parseFloat(e.target.value);
+      seek(val);
+    });
+
+    toggle.addEventListener('click', () => {
+      activeIsAfter = !activeIsAfter;
+      toggle.classList.toggle('active', activeIsAfter);
+      if (isPlaying) {
+        crossfade(activeIsAfter, 0.12);
+      } else {
+        beforeGainNode.gain.value = activeIsAfter ? 0 : 1;
+        afterGainNode.gain.value  = activeIsAfter ? 1 : 0;
+      }
+    });
+
+    let rafId = null;
+    function updateUI() {
+      const pos = isPlaying ? (position + (audioCtx.currentTime - startTimestamp)) : position;
+      rangeEl.value = Math.min(pos, duration);
+      timeEl.textContent = fmtTime(pos) + ' / ' + fmtTime(duration);
+    }
+    function raf() {
+      updateUI();
+      if (isPlaying) {
+        rafId = requestAnimationFrame(raf);
+      } else {
+        if (rafId) cancelAnimationFrame(rafId);
+      }
+    }
+
+    window.addEventListener('unload', () => stopSources());
   });
-});
+
+})();
 </script>
 </body>
 </html>
