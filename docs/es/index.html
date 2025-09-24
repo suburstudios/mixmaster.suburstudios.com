@@ -192,17 +192,13 @@
 
   <h2>Mix Projects</h2>
   <div class="projects-grid">
-    <!-- MIX 1 -->
+    <!-- Repite tus MIX Projects aquí -->
     <div class="project-card" data-before="/es/audio_example1_before.mp3" data-after="/es/audio_example1_after.mp3" data-type="mix">
       <img class="project-thumbnail" src="images/mix_example.png" alt="Mix 1">
       <h3>Mix Project 1</h3>
       <div class="audio-wrapper">
         <div class="controls">
-          <button class="play-btn" aria-label="Reproducir">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-              <path d="M5 3v18l15-9L5 3z" fill="#FFFFFF"/>
-            </svg>
-          </button>
+          <button class="play-btn" aria-label="Reproducir"></button>
           <div class="progress"><input type="range" min="0" max="100" value="0" step="0.1"></div>
           <div class="time">0:00</div>
         </div>
@@ -213,69 +209,7 @@
         </div>
       </div>
     </div>
-    <!-- MIX 2 -->
-    <div class="project-card" data-before="/es/audio_example2_before.mp3" data-after="/es/audio_example2_after.mp3" data-type="mix">
-      <img class="project-thumbnail" src="images/mix_example.png" alt="Mix 2">
-      <h3>Project Mix 2</h3>
-      <div class="audio-wrapper">
-        <div class="controls">
-          <button class="play-btn" aria-label="Reproducir">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-              <path d="M5 3v18l15-9L5 3z" fill="#FFFFFF"/>
-            </svg>
-          </button>
-          <div class="progress"><input type="range" min="0" max="100" value="0" step="0.1"></div>
-          <div class="time">0:00</div>
-        </div>
-        <div class="toggle-wrapper">
-          <span class="label-before">Before</span>
-          <div class="toggle-btn"><div class="toggle-circle"></div></div>
-          <span class="label-after">After</span>
-        </div>
-      </div>
-    </div>
-    <!-- MIX 3 -->
-    <div class="project-card" data-before="/es/audio_example3_before.mp3" data-after="/es/audio_example3_after.mp3" data-type="mix">
-      <img class="project-thumbnail" src="images/mix_example.png" alt="Mix 3">
-      <h3>Project Mix 3</h3>
-      <div class="audio-wrapper">
-        <div class="controls">
-          <button class="play-btn" aria-label="Reproducir">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-              <path d="M5 3v18l15-9L5 3z" fill="#FFFFFF"/>
-            </svg>
-          </button>
-          <div class="progress"><input type="range" min="0" max="100" value="0" step="0.1"></div>
-          <div class="time">0:00</div>
-        </div>
-        <div class="toggle-wrapper">
-          <span class="label-before">Before</span>
-          <div class="toggle-btn"><div class="toggle-circle"></div></div>
-          <span class="label-after">After</span>
-        </div>
-      </div>
-    </div>
-    <!-- MIX 4 -->
-    <div class="project-card" data-before="/es/audio_example4_before.mp3" data-after="/es/audio_example4_after.mp3" data-type="mix">
-      <img class="project-thumbnail" src="images/mix_example.png" alt="Mix 4">
-      <h3>Project Mix 4</h3>
-      <div class="audio-wrapper">
-        <div class="controls">
-          <button class="play-btn" aria-label="Reproducir">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-              <path d="M5 3v18l15-9L5 3z" fill="#FFFFFF"/>
-            </svg>
-          </button>
-          <div class="progress"><input type="range" min="0" max="100" value="0" step="0.1"></div>
-          <div class="time">0:00</div>
-        </div>
-        <div class="toggle-wrapper">
-          <span class="label-before">Before</span>
-          <div class="toggle-btn"><div class="toggle-circle"></div></div>
-          <span class="label-after">After</span>
-        </div>
-      </div>
-    </div>
+    <!-- Agrega los demás MIX Projects siguiendo la misma estructura -->
   </div>
 
   <h2 style="margin-top:2.5rem">Mastering Projects</h2>
@@ -286,11 +220,7 @@
       <h3>Deep House Mastering</h3>
       <div class="audio-wrapper">
         <div class="controls">
-          <button class="play-btn" aria-label="Reproducir">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-              <path d="M5 3v18l15-9L5 3z" fill="#FFFFFF"/>
-            </svg>
-          </button>
+          <button class="play-btn" aria-label="Reproducir"></button>
           <div class="progress"><input type="range" min="0" max="100" value="0" step="0.1"></div>
           <div class="time">0:00</div>
         </div>
@@ -307,11 +237,7 @@
       <h3>Lillyhammer - Wicked // Mastering</h3>
       <div class="audio-wrapper">
         <div class="controls">
-          <button class="play-btn" aria-label="Reproducir">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-              <path d="M5 3v18l15-9L5 3z" fill="#FFFFFF"/>
-            </svg>
-          </button>
+          <button class="play-btn" aria-label="Reproducir"></button>
           <div class="progress"><input type="range" min="0" max="100" value="0" step="0.1"></div>
           <div class="time">0:00</div>
         </div>
@@ -332,8 +258,8 @@
 
 <script>
 (async function() {
-  if (!window.AudioContext && !window.webkitAudioContext) {
-    alert('Your browser doesn't support the modern Web Audio API. The player may not work properly.');
+  if (!(window.AudioContext || window.webkitAudioContext)) {
+    alert('Tu navegador no soporta el Web Audio API. El reproductor puede no funcionar.');
     return;
   }
 
@@ -351,7 +277,6 @@
     const res = await fetch(url);
     if (!res.ok) throw new Error('Error cargando ' + url);
     const arrayBuffer = await res.arrayBuffer();
-    // Corregido: pasar el ArrayBuffer directamente
     return await audioCtx.decodeAudioData(arrayBuffer);
   }
 
@@ -376,14 +301,16 @@
     let startTimestamp = 0;
     let beforeGainNode = audioCtx.createGain();
     let afterGainNode = audioCtx.createGain();
-    let masterGain = audioCtx.createGain(); masterGain.gain.value = 1;
-    beforeGainNode.connect(masterGain); afterGainNode.connect(masterGain); masterGain.connect(audioCtx.destination);
+    let masterGain = audioCtx.createGain();
+    masterGain.gain.value = 1;
+    beforeGainNode.connect(masterGain);
+    afterGainNode.connect(masterGain);
+    masterGain.connect(audioCtx.destination);
 
     let beforeSource = null, afterSource = null;
 
     playBtn.innerHTML = PLAY_SVG;
     playBtn.setAttribute('aria-pressed', 'false');
-
     playBtn.disabled = true;
     toggle.classList.remove('ready');
 
@@ -399,7 +326,7 @@
         beforeGainNode.gain.value = 1;
         afterGainNode.gain.value = 0;
         timeEl.textContent = fmtTime(0) + ' / ' + fmtTime(duration);
-      } catch (e) {
+      } catch(e) {
         console.error('Carga buffers', e);
         timeEl.textContent = 'Error cargando audio';
       }
@@ -407,25 +334,14 @@
 
     function createSources(offset = 0) {
       stopSources();
-
       beforeSource = audioCtx.createBufferSource();
       beforeSource.buffer = beforeBuffer;
       beforeSource.connect(beforeGainNode);
-      beforeSource.onended = () => {
-        if (!isPlaying) return;
-        const elapsed = audioCtx.currentTime - startTimestamp;
-        if (position + elapsed >= duration - 0.05) stop();
-      };
-
+      beforeSource.onended = () => { if (isPlaying && position + (audioCtx.currentTime - startTimestamp) >= duration - 0.05) stop(); };
       afterSource = audioCtx.createBufferSource();
       afterSource.buffer = afterBuffer;
       afterSource.connect(afterGainNode);
-      afterSource.onended = () => {
-        if (!isPlaying) return;
-        const elapsed = audioCtx.currentTime - startTimestamp;
-        if (position + elapsed >= duration - 0.05) stop();
-      };
-
+      afterSource.onended = () => { if (isPlaying && position + (audioCtx.currentTime - startTimestamp) >= duration - 0.05) stop(); };
       const now = audioCtx.currentTime;
       try { beforeSource.start(now, Math.min(offset, beforeBuffer.duration)); } catch(e){}
       try { afterSource.start(now, Math.min(offset, afterBuffer.duration)); } catch(e){}
@@ -433,107 +349,77 @@
     }
 
     function stopSources() {
-      try { if (beforeSource) { beforeSource.onended = null; beforeSource.stop(0); } } catch(e){}
-      try { if (afterSource) { afterSource.onended = null; afterSource.stop(0); } } catch(e){}
+      try { if (beforeSource){ beforeSource.onended=null; beforeSource.stop(0);} } catch(e){}
+      try { if (afterSource){ afterSource.onended=null; afterSource.stop(0);} } catch(e){}
       beforeSource = null; afterSource = null;
     }
 
     function play() {
-      if (!isLoaded) return;
-      if (audioCtx.state === 'suspended') { audioCtx.resume(); }
+      if(!isLoaded) return;
+      if(audioCtx.state==='suspended') audioCtx.resume();
       createSources(position);
       isPlaying = true;
       startTimestamp = audioCtx.currentTime;
       playBtn.innerHTML = PAUSE_SVG;
-      playBtn.setAttribute('aria-pressed', 'true');
+      playBtn.setAttribute('aria-pressed','true');
       raf();
     }
 
     function pause() {
-      if (!isPlaying) return;
-      position = position + (audioCtx.currentTime - startTimestamp);
+      if(!isPlaying) return;
+      position += (audioCtx.currentTime - startTimestamp);
       stopSources();
       isPlaying = false;
       playBtn.innerHTML = PLAY_SVG;
-      playBtn.setAttribute('aria-pressed', 'false');
+      playBtn.setAttribute('aria-pressed','false');
     }
 
-    function stop() {
-      pause();
-      position = 0;
-      updateUI();
+    function stop() { pause(); position=0; updateUI(); }
+
+    function seek(toSec){
+      position = Math.min(Math.max(0,toSec),duration);
+      if(isPlaying){ createSources(position); startTimestamp=audioCtx.currentTime; }
+      else updateUI();
     }
 
-    function seek(toSec) {
-      position = Math.min(Math.max(0, toSec), duration);
-      if (isPlaying) {
-        createSources(position);
-        startTimestamp = audioCtx.currentTime;
-      } else {
-        updateUI();
-      }
-    }
-
-    function crossfade(toAfter, fadeTime = 0.12) {
+    function crossfade(toAfter,fadeTime=0.12){
       const now = audioCtx.currentTime;
       beforeGainNode.gain.cancelScheduledValues(now);
       afterGainNode.gain.cancelScheduledValues(now);
-      beforeGainNode.gain.setValueAtTime(beforeGainNode.gain.value, now);
-      afterGainNode.gain.setValueAtTime(afterGainNode.gain.value, now);
-      if (toAfter) {
-        beforeGainNode.gain.linearRampToValueAtTime(0, now + fadeTime);
-        afterGainNode.gain.linearRampToValueAtTime(1, now + fadeTime);
+      beforeGainNode.gain.setValueAtTime(beforeGainNode.gain.value,now);
+      afterGainNode.gain.setValueAtTime(afterGainNode.gain.value,now);
+      if(toAfter){
+        beforeGainNode.gain.linearRampToValueAtTime(0,now+fadeTime);
+        afterGainNode.gain.linearRampToValueAtTime(1,now+fadeTime);
       } else {
-        beforeGainNode.gain.linearRampToValueAtTime(1, now + fadeTime);
-        afterGainNode.gain.linearRampToValueAtTime(0, now + fadeTime);
+        beforeGainNode.gain.linearRampToValueAtTime(1,now+fadeTime);
+        afterGainNode.gain.linearRampToValueAtTime(0,now+fadeTime);
       }
     }
 
-    playBtn.addEventListener('click', () => {
-      if (!isLoaded) return;
-      if (!isPlaying) {
-        beforeGainNode.gain.value = activeIsAfter ? 0 : 1;
-        afterGainNode.gain.value  = activeIsAfter ? 1 : 0;
-        play();
-      } else {
-        pause();
-      }
-    });
-
-    rangeEl.addEventListener('input', (e) => {
-      const val = parseFloat(e.target.value);
-      seek(val);
-    });
-
-    toggle.addEventListener('click', () => {
+    playBtn.addEventListener('click',()=>{ if(!isPlaying){ play(); } else { pause(); } });
+    rangeEl.addEventListener('input',(e)=>{ seek(parseFloat(e.target.value)); });
+    toggle.addEventListener('click',()=>{
       activeIsAfter = !activeIsAfter;
-      toggle.classList.toggle('active', activeIsAfter);
-      if (isPlaying) {
-        crossfade(activeIsAfter, 0.12);
-      } else {
-        beforeGainNode.gain.value = activeIsAfter ? 0 : 1;
-        afterGainNode.gain.value  = activeIsAfter ? 1 : 0;
-      }
+      toggle.classList.toggle('active',activeIsAfter);
+      if(isPlaying) crossfade(activeIsAfter,0.12);
+      else { beforeGainNode.gain.value = activeIsAfter?0:1; afterGainNode.gain.value=activeIsAfter?1:0; }
     });
 
-    let rafId = null;
-    function updateUI() {
+    let rafId=null;
+    function updateUI(){
       const pos = isPlaying ? (position + (audioCtx.currentTime - startTimestamp)) : position;
-      rangeEl.value = Math.min(pos, duration);
+      rangeEl.value = Math.min(pos,duration);
       timeEl.textContent = fmtTime(pos) + ' / ' + fmtTime(duration);
     }
-    function raf() {
+    function raf(){
       updateUI();
-      if (isPlaying) {
-        rafId = requestAnimationFrame(raf);
-      } else {
-        if (rafId) cancelAnimationFrame(rafId);
-      }
+      if(isPlaying) rafId=requestAnimationFrame(raf);
+      else if(rafId) cancelAnimationFrame(rafId);
     }
 
-    window.addEventListener('unload', () => stopSources());
+    window.addEventListener('unload',()=>stopSources());
   });
-
 })();
 </script>
 </body>
